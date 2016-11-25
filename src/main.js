@@ -1,17 +1,31 @@
 import Vue from 'vue'
-import App from './App'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+import Vuex from 'vuex'
+import App from './App'
+
+import '../node_modules/zui/dist/css/zui.css'
+import '../node_modules/font-awesome/css/font-awesome.css'
 
 import routes from './routes'
-/* eslint-disable no-new */
+import storeParams from './vuex/store'
+
 Vue.use(VueRouter)
+Vue.use(Vuex)
+Vue.use(VueResource)
 
 const router = new VueRouter({
   routes
 })
 
+export const store = new Vuex.Store(storeParams)
+
+/* eslint-disable no-new */
 new Vue({
   el: '#app',
-  template: '<App/>',
-  components: { App }
+  components: { App },
+  render: function (createElement) {
+    return createElement('App')
+  },
+  router
 })
