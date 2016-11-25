@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Codetector (Yaotian Feng)
+ */
+
 // https://github.com/shelljs/shelljs
 require('./check-versions')()
 require('shelljs/global')
@@ -27,10 +31,10 @@ webpack(webpackConfig, function (err, stats) {
   spinner.stop()
   if (err) throw err
   process.stdout.write(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n')
+          colors: true,
+          modules: false,
+          children: false,
+          chunks: false,
+          chunkModules: false
+      }) + '\n')
 })

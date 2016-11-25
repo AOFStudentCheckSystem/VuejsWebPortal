@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Codetector (Yaotian Feng)
+ */
+
 const path = require('path');
 const config = require('../config');
 const utils = require('./utils');
@@ -88,7 +92,7 @@ module.exports = {
       from: "node_modules/jquery/dist/jquery.js"
     }, {
       from: "node_modules/zui/dist/js/zui.js"
-    }],{
+    }], {
       ignore: [
         // Doesn't copy any files with a txt extension
         '*.txt',
@@ -100,7 +104,7 @@ module.exports = {
     formatter: require('eslint-friendly-formatter')
   },
   vue: {
-    loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
+      loaders: utils.cssLoaders({sourceMap: useCssSourceMap}),
     postcss: [
       require('autoprefixer')({
         browsers: ['last 2 versions']

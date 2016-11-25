@@ -1,7 +1,8 @@
-import {AuthAPI} from './AuthAPI'
-/**
- * Created by dummy on 11/11/16.
+/*
+ * Copyright (c) 2016. Codetector (Yaotian Feng)
  */
+
+import {AuthAPI} from "./AuthAPI";
 export default {
-  auth: new AuthAPI()
+    auth: new AuthAPI()
 }

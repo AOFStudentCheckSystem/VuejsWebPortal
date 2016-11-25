@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Codetector (Yaotian Feng)
+ */
+
 var config = require('../config')
 var webpack = require('webpack')
 var merge = require('webpack-merge')
@@ -12,7 +16,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 module.exports = merge(baseWebpackConfig, {
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+      loaders: utils.styleLoaders({sourceMap: config.dev.cssSourceMap})
   },
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
