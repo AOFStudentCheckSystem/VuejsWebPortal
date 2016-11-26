@@ -1,17 +1,28 @@
 <template>
     <div>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <a class="navbar-center navbar-brand">AOF Portal</a>
-            <div class="container-fluid">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- 导航头部 -->
                 <div class="navbar-header">
-                    <div class="navbar-brand" v-show="backEnabled" v-on:click="back()">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                        Back
-                    </div>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".portal-navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Avon Old Farms Portal</a>
                 </div>
-                <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
-                    <li><a href="" class="navbar-brand" v-on:click="signOut()">{{signInStatus}}</a></li>
-                </ul>
+                <div class="collapse navbar-collapse portal-navbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">{{usernameText}} <b class="caret"
+                                                                                                  v-if="authenticated"></b></a>
+                            <ul class="dropdown-menu" role="menu" v-if="authenticated">
+                                <li class="divider"></li>
+                                <li><a href="" v-on:click="signOut()">Sign Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- END .navbar-collapse -->
             </div>
         </nav>
         <transition :name="transitionName" mode="out-in">
@@ -40,8 +51,8 @@
             }
         },
         computed: {
-            signInStatus () {
-                return this.$store.state.authentication.authenticated ? 'Sign Out' : 'No User'
+            usernameText () {
+                return this.$store.state.authentication.authenticated ? this.$store.state.authentication.username : 'Please Login'
             },
             authenticated () {
                 return this.$store.state.authentication.authenticated
@@ -80,19 +91,8 @@
         display: none;
     }
 
-    html,
     body {
-        height: 100%;
-    }
-
-    body {
-        overflow: hidden;
-        background: radial-gradient(
-            ellipse at center,
-            rgba(255, 255, 255, 1) 20%,
-            rgba(226, 226, 226, 0.85) 100%
-        ), center;
-        display: flex;
+        background-color: rgba(226, 226, 226, 0.85);
         font-family: Lato, Helvetica, sans-serif;
     }
 
@@ -134,6 +134,6 @@
     }
 
     .main-view {
-        padding-top: 100px;
+        padding-top: 70px;
     }
 </style>

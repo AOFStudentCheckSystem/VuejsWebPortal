@@ -5,8 +5,8 @@
 /**
  * Created by dummy on 11/14/16.
  */
-import * as types from "./mutation-types";
-import Vue from "vue";
+import * as types from './mutation-types'
+import Vue from 'vue'
 
 export const localStoragePlugin = store => {
     const deserialize = JSON.parse
@@ -19,13 +19,12 @@ export const localStoragePlugin = store => {
         store.commit(types.AUTHENTICATION, payload)
     }
 
-    // load async
     window.setTimeout(() => {
-        const savedStudents = localStorage.getItem('students')
-        if (savedStudents !== null) {
-            store.commit(types.SET_STUDENTS, deserialize(savedStudents))
+        if (store.state.authentication.authenticated) {
+            store.dispatch('verifyToken')
         }
     }, 0)
+
     // persist sign-in
     store.subscribe(({type, payload}, state) => {
         window.setTimeout(() => {

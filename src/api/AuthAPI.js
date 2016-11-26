@@ -2,11 +2,8 @@
  * Copyright (c) 2016. Codetector (Yaotian Feng)
  */
 
-/**
- * Created by dummy on 11/12/16.
- */
-import Vue from "vue";
-import md5 from "md5";
+import Vue from 'vue'
+import md5 from 'md5'
 
 export class AuthAPI {
     /**
@@ -15,7 +12,7 @@ export class AuthAPI {
      * @param password
      * @returns {Promise} resolve -> token, reject -> response
      */
-    authenticate(username, password) {
+    authenticate (username, password) {
         const formData = new FormData()
         formData.append('username', username)
         formData.append('password', md5(password))
@@ -28,6 +25,20 @@ export class AuthAPI {
                 })
             }, (response) => {
                 reject(response)
+            })
+        })
+    }
+
+    verify () {
+        return new Promise((resolve, reject) => {
+            Vue.http.post('auth/verify', new FormData()).then((response) => {
+                response.json().then((json) => {
+                    resolve(json.username)
+                }, (failed) => {
+                    reject(failed)
+                })
+            }, (failed) => {
+                reject(failed)
             })
         })
     }

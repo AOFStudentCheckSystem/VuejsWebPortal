@@ -2,15 +2,15 @@
  * Copyright (c) 2016. Codetector (Yaotian Feng)
  */
 
-import Vue from "vue";
-import VueRouter from "vue-router";
-import VueResource from "vue-resource";
-import Vuex from "vuex";
-import App from "./App";
-import "../node_modules/zui/dist/css/zui.css";
-import "../node_modules/font-awesome/css/font-awesome.css";
-import routes from "./routes";
-import storeParams from "./vuex/store";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+import Vuex from 'vuex'
+import App from './App'
+import '../node_modules/zui/dist/css/zui.css'
+import '../node_modules/font-awesome/css/font-awesome.css'
+import routes from './routes'
+import storeParams from './vuex/store'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)

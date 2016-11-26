@@ -2,12 +2,13 @@
  * Copyright (c) 2016. Codetector (Yaotian Feng)
  */
 
-import Vue from "vue";
-import * as types from "../mutation-types";
-import api from "../../api/webportalAPI";
+import Vue from 'vue'
+import * as types from '../mutation-types'
+import api from '../../api/webportalAPI'
 
 const state = {
     token: '',
+    username: '',
     authenticated: false,
     error: false
 }
@@ -22,6 +23,9 @@ const mutations = {
     },
     [types.AUTHENTICATION_ERROR] (state, {error}) {
         state.error = error
+    },
+    [types.AUTHENTICATION_VERIFICATION] (state, {username}) {
+        state.username = username
     }
 }
 
@@ -30,9 +34,18 @@ const actions = {
         api.auth.authenticate(username, password).then((token) => {
             Vue.http.headers.common['Authorization'] = token
             commit(types.AUTHENTICATION, {token: token})
-            callback()
+            dispatch('verifyToken')
+            callback(true)
         }, (response) => {
             commit(types.AUTHENTICATION_ERROR, {error: true})
+            commit(types.AUTHENTICATION_FAILURE)
+            callback(false)
+        })
+    },
+    verifyToken: ({commit}) => {
+        api.auth.verify().then((success) => {
+            commit(types.AUTHENTICATION_VERIFICATION, {username: success})
+        }, (response) => {
             commit(types.AUTHENTICATION_FAILURE)
         })
     },
