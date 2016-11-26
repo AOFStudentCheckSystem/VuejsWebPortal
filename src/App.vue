@@ -2,7 +2,6 @@
     <div>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
-                <!-- 导航头部 -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".portal-navbar">
                         <span class="icon-bar"></span>
@@ -32,6 +31,7 @@
 </template>
 
 <script>
+    import * as types from './vuex/mutation-types'
     export default {
         data () {
             return {
@@ -66,9 +66,21 @@
             this.$router.beforeEach((to, from, next) => {
                 const toDepth = to.path.split('/').length
                 const fromDepth = from.path.split('/').length
-                self.transitionName = toDepth < fromDepth ? 'slide-right' : to.path.length < 2 ? 'slide-right' : 'slide-left'
+                if (from.path === '/signin') {
+                    self.transitionName = 'slide-right'
+                } else {
+                    self.transitionName = toDepth < fromDepth ? 'slide-right' : to.path.length < 2 ? 'slide-right' : 'slide-left'
+                }
                 self.backEnabled = !(to.path.length < 2 || to.path === '/signin')
                 next()
+            })
+            this.$store.subscribe((mutation, state) => {
+                console.log(mutation.type)
+                switch (mutation.type) {
+                    case types.AUTHENTICATION_FAILURE:
+                        self.$router.replace('/signin')
+                        break
+                }
             })
         }
     }
@@ -76,8 +88,6 @@
 
 
 <style>
-    @import url(https://fonts.googleapis.com/css?family=Lato:300);
-
     * {
         /*margin: 0;*/
         padding: 0;
@@ -93,7 +103,7 @@
 
     body {
         background-color: rgba(226, 226, 226, 0.85);
-        font-family: Lato, Helvetica, sans-serif;
+        font-family: Helvetica, sans-serif;
     }
 
     .navbar-center {

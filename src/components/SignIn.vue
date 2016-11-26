@@ -8,7 +8,7 @@
     }
 
     .align-vertical {
-        padding: 70% 0;
+        padding: 50% 0;
     }
 
     .footer {
@@ -75,12 +75,11 @@
                         if (result) {
                             self.$router.replace('/')
                         } else {
+                            this.password = ''
                             self.isLoginAvailable = true
                         }
                     }
                 })
-//        this.username = ''
-                this.password = ''
             }
         },
         computed: {
