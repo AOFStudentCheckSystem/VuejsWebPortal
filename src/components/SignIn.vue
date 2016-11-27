@@ -75,7 +75,7 @@
                         if (result) {
                             self.$router.replace('/')
                         } else {
-                            this.password = ''
+                            self.password = ''
                             self.isLoginAvailable = true
                         }
                     }

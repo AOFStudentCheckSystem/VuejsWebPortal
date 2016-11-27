@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".portal-navbar">
@@ -8,13 +8,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Avon Old Farms Portal</a>
+                    <a class="navbar-brand" href="javascript:" v-on:click="goHome()">Avon Old Farms Portal</a>
                 </div>
                 <div class="collapse navbar-collapse portal-navbar">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown">{{usernameText}} <b class="caret"
-                                                                                                  v-if="authenticated"></b></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href>{{usernameText}} <b class="caret"
+                                                                                                       v-if="authenticated"></b></a>
                             <ul class="dropdown-menu" role="menu" v-if="authenticated">
                                 <li class="divider"></li>
                                 <li><a href="" v-on:click="signOut()">Sign Out</a></li>
@@ -40,6 +40,9 @@
             }
         },
         methods: {
+            goHome () {
+                this.$router.replace('/')
+            },
             signOut () {
                 if (this.$store.state.authentication.authenticated) {
                     this.$store.dispatch('signOut')
@@ -88,19 +91,6 @@
 
 
 <style>
-    * {
-        /*margin: 0;*/
-        padding: 0;
-    }
-
-    *:focus {
-        outline: none !important;
-    }
-
-    *::-webkit-scrollbar {
-        display: none;
-    }
-
     body {
         background-color: rgba(226, 226, 226, 0.85);
         font-family: Helvetica, sans-serif;
@@ -140,10 +130,10 @@
     }
 
     .child-transition {
-        transition: all .4s ease; /* cubic-bezier(.55, 0, .1, 1) */
+        /*transition: all .4s ease; !* cubic-bezier(.55, 0, .1, 1) *!*/
     }
 
     .main-view {
-        padding-top: 70px;
+        padding-top: 80px;
     }
 </style>
