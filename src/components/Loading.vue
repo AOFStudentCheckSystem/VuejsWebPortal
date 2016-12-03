@@ -149,7 +149,7 @@
             toDashboard () {
                 let self = this
                 window.setTimeout(() => {
-                    self.$router.replace('/dashboard')
+                    self.$router.replace('/dashboard/home')
                 }, 1500 * Math.random())
             }
         },

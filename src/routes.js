@@ -16,6 +16,18 @@ export default [
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: require('components/Dashboard/DashboardParent')
+        component: require('components/Dashboard/DashboardParent'),
+        children: [
+            {
+                path: 'home',
+                name: 'dashboard_home',
+                component: require('components/Dashboard/Home')
+            },
+            {
+                path: 'events',
+                name: 'dashboard_events',
+                component: require('components/Dashboard/Home')
+            }
+        ]
     }
 ]
