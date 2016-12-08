@@ -5,6 +5,13 @@
                                                                                                 :class="{'fa-spin':refreshing}"></i>
             </button>
         </h1>
+        <div class="row">
+            <div class="progress progress-striped">
+                <div class="progress-bar progress-bar-success" :aria-valuenow="timeoutPercent" aria-valuemin="0" aria-valuemax="100" :style="{width : timeoutPercent + '%'}">
+                    <span class="sr-only">40% Complete (success)</span>
+                </div>
+            </div>
+        </div>
         <div class='row'>
             <ul class='nav nav-tabs'>
                 <li :class='{active : isTab(0)}'><a v-on:click='setTab(0)'>All Events <span
@@ -45,12 +52,15 @@
 <script>
     import * as mTypes from '../../vuex/mutation-types'
     let moment = require('moment')
+    let timeout = false
+    const updateInterval = 5000
     export default {
         data () {
             return {
                 current_tab: 0,
                 currentSelection: false,
-                refreshing: false
+                refreshing: false,
+                lastUpdate: 0
             }
         },
         methods: {
@@ -90,6 +100,7 @@
                 }
             },
             reloadList () {
+                this.lastUpdate = new Date().getTime()
                 this.refreshing = true
                 this.$store.dispatch('updateEventList')
             }
@@ -102,6 +113,12 @@
                 }
             })
             this.reloadList()
+            timeout = window.setInterval(() => {
+                this.reloadList()
+            }, updateInterval)
+        },
+        beforeDestroy () {
+            window.clearInterval(timeout)
         },
         computed: {
             currentEvents () {
@@ -149,6 +166,10 @@
             },
             canDelete () {
                 return this.hasSelection && this.currentSelection.eventStatus >= 0
+            },
+            timeoutPercent () {
+                let value = 1 - ((new Date().getTime() - this.lastUpdate) / updateInterval)
+                return value * 100
             }
         }
     }
