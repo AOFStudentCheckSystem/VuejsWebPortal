@@ -3,8 +3,13 @@
         <div class="col-sm-4 col-md-3 col-lg-2 hidden-xs side-nav-container">
             <nav class="menu" data-toggle="menu">
                 <ul class="nav nav-primary">
-                    <li><router-link :to="{name: 'dashboard_home'}">Home</router-link></li>
-                    <li><router-link :to="{name: 'dashboard_events'}"><i class="fa fa-calendar"></i>Events</router-link></li>
+                    <li :class="{active : isCurrentPage('home')}">
+                        <router-link :to="{name: 'dashboard_home'}"><i class="fa fa-home"></i> Home</router-link>
+                    </li>
+                    <li :class="{active : isCurrentPage('events')}">
+                        <router-link :to="{name: 'dashboard_events'}"><i class="fa fa-calendar"></i> Events
+                        </router-link>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -16,6 +21,7 @@
 </template>
 <script>
     export default {
+        name: 'Dashboard',
         computed: {
             currentRoute () {
                 return this.$route.name
@@ -24,6 +30,11 @@
         created () {
             if (this.currentRoute === 'dashboard') {
                 this.$router.replace({name: 'dashboard_home'})
+            }
+        },
+        methods: {
+            isCurrentPage (name) {
+                return this.$route.name.match(new RegExp('^dashboard_' + name + '.*'))
             }
         }
     }

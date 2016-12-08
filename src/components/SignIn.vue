@@ -56,6 +56,7 @@
 
 <script>
     export default {
+        name: 'SignIn',
         data () {
             return {
                 username: '',

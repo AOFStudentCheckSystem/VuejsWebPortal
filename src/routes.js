@@ -26,7 +26,12 @@ export default [
             {
                 path: 'events',
                 name: 'dashboard_events',
-                component: require('components/Dashboard/Home')
+                component: require('components/Dashboard/Events')
+            },
+            {
+                path: 'events/view',
+                name: 'dashboard_events_view',
+                component: require('components/Dashboard/EventBrowse')
             }
         ]
     }

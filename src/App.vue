@@ -78,7 +78,6 @@
                 next()
             })
             this.$store.subscribe((mutation, state) => {
-                console.log(mutation.type)
                 switch (mutation.type) {
                     case types.AUTHENTICATION_FAILURE:
                         self.$router.replace('/signin')

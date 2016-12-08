@@ -3,6 +3,8 @@
  */
 
 import {AuthAPI} from './AuthAPI'
+import {EventAPI} from './EventAPI'
 export default {
-    auth: new AuthAPI()
+    auth: new AuthAPI(),
+    event: new EventAPI()
 }
