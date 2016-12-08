@@ -6,9 +6,9 @@
             </button>
         </h1>
         <div class="row">
-            <div class="progress progress-striped">
-                <div class="progress-bar progress-bar-success" :aria-valuenow="timeoutPercent" aria-valuemin="0" aria-valuemax="100" :style="{width : timeoutPercent + '%'}">
-                    <span class="sr-only">40% Complete (success)</span>
+            <div class="progress" style="height: 5px;">
+                <div class="progress-bar progress-bar-default" :aria-valuenow="timeoutPercent" aria-valuemin="0"
+                     aria-valuemax="100" :style="{width : timeoutPercent + '%'}">
                 </div>
             </div>
         </div>
@@ -53,14 +53,16 @@
     import * as mTypes from '../../vuex/mutation-types'
     let moment = require('moment')
     let timeout = false
-    const updateInterval = 5000
+    let nowTimeout = false
+    const updateInterval = 10000
     export default {
         data () {
             return {
                 current_tab: 0,
                 currentSelection: false,
                 refreshing: false,
-                lastUpdate: 0
+                lastUpdate: 0,
+                now: 0
             }
         },
         methods: {
@@ -100,9 +102,10 @@
                 }
             },
             reloadList () {
-                this.lastUpdate = new Date().getTime()
-                this.refreshing = true
-                this.$store.dispatch('updateEventList')
+                if (!this.refreshing) {
+                    this.refreshing = true
+                    this.$store.dispatch('updateEventList')
+                }
             }
         },
         created () {
@@ -112,13 +115,21 @@
                     self.refreshing = false
                 }
             })
+            this.now = new Date().getTime()
+            this.lastUpdate = this.now
             this.reloadList()
+
+            nowTimeout = window.setInterval(() => {
+                this.now = new Date().getTime()
+            }, 10)
             timeout = window.setInterval(() => {
                 this.reloadList()
+                this.lastUpdate = this.now
             }, updateInterval)
         },
         beforeDestroy () {
             window.clearInterval(timeout)
+            window.clearInterval(nowTimeout)
         },
         computed: {
             currentEvents () {
@@ -168,8 +179,8 @@
                 return this.hasSelection && this.currentSelection.eventStatus >= 0
             },
             timeoutPercent () {
-                let value = 1 - ((new Date().getTime() - this.lastUpdate) / updateInterval)
-                return value * 100
+                let value = 1 - ((this.now - this.lastUpdate) / (updateInterval - 1000))
+                return Math.ceil(value * 100)
             }
         }
     }
