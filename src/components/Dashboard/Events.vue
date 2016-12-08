@@ -1,6 +1,10 @@
 <template>
     <div class='container'>
-        <h1>Events</h1>
+        <h1>Events
+            <button class="btn btn-default" :disabled="refreshing" v-on:click="reloadList()"><i class="fa fa-refresh"
+                                                                                                :class="{'fa-spin':refreshing}"></i>
+            </button>
+        </h1>
         <div class='row'>
             <ul class='nav nav-tabs'>
                 <li :class='{active : isTab(0)}'><a v-on:click='setTab(0)'>All Events <span
@@ -29,7 +33,9 @@
             <div class="pull-right">
                 <button class="btn btn-default" :disabled="!hasSelection" v-on:click="viewDetail()">View Detail</button>
             </div>
-            <button class="btn btn-danger" :disabled="!canDelete" v-if="(current_tab < 4)">Delete</button>
+            <button class="btn btn-danger" :disabled="!canDelete" v-if="(current_tab < 4)" v-on:click="deleteEvent()">
+                Delete
+            </button>
             <button class="btn btn-success" :disabled="!canComplete" v-if="(current_tab !== 1) && (current_tab < 4)">
                 Complete
             </button>
@@ -43,7 +49,8 @@
         data () {
             return {
                 current_tab: 0,
-                currentSelection: false
+                currentSelection: false,
+                refreshing: false
             }
         },
         methods: {
@@ -78,13 +85,22 @@
                 this.currentSelection = e
             },
             deleteEvent () {
+                if (confirm('Sure wanna del?')) {
 
+                }
             },
             reloadList () {
+                this.refreshing = true
                 this.$store.dispatch('updateEventList')
             }
         },
         created () {
+            let self = this
+            this.$store.subscribe((mutation, state) => {
+                if (mutation.type === mTypes.EVENT_LIST_CHANGE) {
+                    self.refreshing = false
+                }
+            })
             this.reloadList()
         },
         computed: {
