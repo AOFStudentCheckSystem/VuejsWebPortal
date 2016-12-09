@@ -66,9 +66,7 @@
         },
         methods: {
             viewDetail () {
-                if (this.currentSelection !== false) {
-                    this.$store.commit(mTypes.EVENT_ACTIVATE, {event: this.currentSelection})
-                }
+                this.$router.push({name: 'dashboard_events_view'})
             },
             setTab (newTab) {
                 this.current_tab = newTab
