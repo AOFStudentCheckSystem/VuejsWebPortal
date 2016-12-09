@@ -15,7 +15,7 @@ const mutations = {
         state.events = JSON.parse(JSON.stringify(newList))
     },
     [types.EVENT_ACTIVATE] (state, {event}) {
-        if (!state.active && event !== '' && state.active !== event) {
+        if (state.active !== event) {
             state.active = event
         }
     },
@@ -30,10 +30,8 @@ const actions = {
             commit(types.EVENT_LIST_CHANGE, {newList: events})
         }, (fail) => {
             console.error(fail)
+            commit(types.AUTHENTICATION_FAILURE)
         })
-    },
-    selectEvent: ({commit}, {event}) => {
-
     }
 }
 

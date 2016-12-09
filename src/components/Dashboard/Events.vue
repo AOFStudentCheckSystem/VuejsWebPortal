@@ -28,7 +28,7 @@
         </div>
         <div class='row' style='margin-top: 0.5em; max-height: 60vh; overflow-y: scroll;'>
             <div class='list-group'>
-                <a class='list-group-item' v-for='event in currentEvents' :class="{active : currentSelection===event}"
+                <a class='list-group-item' v-for='event in currentEvents' :class="{active : isSelected(event)}"
                    v-on:click="selectEvent(event)">
                     <h4 class='list-group-item-heading'>{{event.eventName}}</h4>
                     <div class='pull-right'><p>{{formatEventStatus(event.eventStatus)}}</p></div>
@@ -59,7 +59,6 @@
         data () {
             return {
                 current_tab: 0,
-                currentSelection: false,
                 refreshing: false,
                 lastUpdate: 0,
                 now: 0
@@ -73,7 +72,7 @@
             },
             setTab (newTab) {
                 this.current_tab = newTab
-                this.currentSelection = false
+                this.deselectEvent()
             },
             isTab (tab) {
                 return this.current_tab === tab
@@ -94,7 +93,13 @@
                 }
             },
             selectEvent (e) {
-                this.currentSelection = e
+                this.$store.commit(mTypes.EVENT_ACTIVATE, {event: e})
+            },
+            deselectEvent () {
+                this.$store.commit(mTypes.EVENT_DEACTIVATE)
+            },
+            isSelected (e) {
+                return this.currentSelection !== false && this.currentSelection.eventId === e.eventId
             },
             deleteEvent () {
                 if (confirm('Sure wanna del?')) {
@@ -113,6 +118,17 @@
             this.$store.subscribe((mutation, state) => {
                 if (mutation.type === mTypes.EVENT_LIST_CHANGE) {
                     self.refreshing = false
+                    if (this.currentSelection !== false) {
+                        let hasItem = false
+                        this.$store.state.events.events.forEach((item) => {
+                            if (item.eventId === this.currentSelection.eventId) {
+                                hasItem = true
+                            }
+                        })
+                        if (!hasItem) {
+                            this.deselectEvent()
+                        }
+                    }
                 }
             })
             this.now = new Date().getTime()
@@ -181,6 +197,9 @@
             timeoutPercent () {
                 let value = 1 - ((this.now - this.lastUpdate) / (updateInterval - 1000))
                 return Math.ceil(value * 100)
+            },
+            currentSelection () {
+                return this.$store.state.events.active
             }
         }
     }
