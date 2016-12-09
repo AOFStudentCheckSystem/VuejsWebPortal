@@ -38,6 +38,7 @@
         </div>
         <div class="row" style="margin-top: 0.5em;">
             <div class="pull-right">
+                <button class="btn btn-primary" :disabled="!isComplete" v-on:click="sendEmail()">Email</button>
                 <button class="btn btn-default" :disabled="!hasSelection" v-on:click="viewDetail()">View Detail</button>
             </div>
             <button class="btn btn-danger" :disabled="!canDelete" v-if="(current_tab < 4)" v-on:click="deleteEvent()">
@@ -56,6 +57,7 @@
     let nowTimeout = false
     const updateInterval = 10000
     export default {
+        name: 'EventList',
         data () {
             return {
                 current_tab: 0,
@@ -109,6 +111,9 @@
                     this.refreshing = true
                     this.$store.dispatch('updateEventList')
                 }
+            },
+            sendEmail () {
+                this.$router.push({name: 'dashboard_events_email'})
             }
         },
         created () {
@@ -187,6 +192,9 @@
             },
             currentSelection () {
                 return this.$store.state.events.active
+            },
+            isComplete () {
+                return this.hasSelection && this.currentSelection.eventStatus === 2
             }
         }
     }

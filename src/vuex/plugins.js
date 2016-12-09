@@ -19,6 +19,10 @@ export const localStoragePlugin = store => {
         store.commit(types.AUTHENTICATION, payload)
     }
 
+    const recent = deserialize(localStorage.getItem('recent'))
+    if (recent !== undefined && recent !== null && recent !== '') {
+        store.commit(types.RECENT_LIST_CHANGE, {items: recent})
+    }
     window.setTimeout(() => {
         if (store.state.authentication.authenticated) {
             store.dispatch('verifyToken')
@@ -35,7 +39,11 @@ export const localStoragePlugin = store => {
                 case types.AUTHENTICATION_FAILURE:
                     localStorage.removeItem('authentication')
                     break
+                case types.RECENT_LIST_ADD:
+                case types.RECENT_LIST_REMOVE:
+                    localStorage.setItem('recent', serialize(state.recent.recent))
+                    break
             }
-        }, 1)
+        }, 0)
     })
 }
