@@ -23,7 +23,12 @@ const mutations = {
         }
     },
     [types.RECENT_LIST_REMOVE] (state, {email}) {
-        state.recent.$remove(email.toLowerCase())
+        for (let i = 0; i < state.recent.length; i++) {
+            if (state.recent[i].toLowerCase() === email.toLowerCase()) {
+                state.recent.splice(i, 1)
+                break
+            }
+        }
     },
     [types.RECENT_LIST_CHANGE] (state, {items}) {
         state.recent = items

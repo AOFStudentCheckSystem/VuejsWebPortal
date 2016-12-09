@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="form-group" :class="{ 'has-error' : emailHasError , 'has-success' : emailCorrect}">
-                    <input v-on:keyup.enter="addEmail($event)" v-model="emailTextField" type="email"
+                    <input v-on:keyup.enter="addEmailToRecent($event)" v-model="emailTextField" type="email"
                            class="form-control" placeholder="example@example.com">
                 </div>
             </div>
@@ -19,7 +19,8 @@
                 <div class='list-group'>
                     <a class='list-group-item' v-for='email in recentEmails' :class="{active : isSelected(email)}">
                         <div class="pull-right">
-                            <button class="btn btn-danger btn-xs">Remove</button>
+                            <button class="btn btn-danger btn-xs" v-on:click="removeEmailFromRecent(email)">Remove
+                            </button>
                         </div>
                         <a v-on:click="triggerSelection(email)"><h4 class='list-group-item-heading'
                                                                     style="color: #000000;">{{email}}</h4></a>
@@ -62,7 +63,6 @@
         },
         created () {
             if (this.currentSelection === false) {
-                console.log(this.currentSelection)
                 this.backToList()
             }
         },
@@ -70,9 +70,13 @@
             backToList () {
                 this.$router.go(-1)
             },
-            addEmail () {
+            addEmailToRecent () {
                 this.$store.commit(mTypes.RECENT_LIST_ADD, {email: this.emailTextField})
                 this.emailTextField = ''
+            },
+            removeEmailFromRecent (email) {
+                this.removeEmail(email)
+                this.$store.commit(mTypes.RECENT_LIST_REMOVE, {email: email})
             },
             isSelected (email) {
                 let selected = false
