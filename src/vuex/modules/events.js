@@ -25,9 +25,20 @@ const mutations = {
 }
 
 const actions = {
-    updateEventList: ({commit, dispatch}) => {
+    updateEventList: ({commit, dispatch, state}) => {
         api.event.updateEventList().then((events) => {
             commit(types.EVENT_LIST_CHANGE, {newList: events})
+            if (state.active !== false) {
+                let hasItem = false
+                state.events.forEach((item) => {
+                    if (item.eventId === state.active.eventId) {
+                        hasItem = true
+                    }
+                })
+                if (!hasItem) {
+                    dispatch(types.EVENT_DEACTIVATE)
+                }
+            }
         }, (fail) => {
             console.error(fail)
             commit(types.AUTHENTICATION_FAILURE)

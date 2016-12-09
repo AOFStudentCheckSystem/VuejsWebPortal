@@ -116,17 +116,6 @@
             this.$store.subscribe((mutation, state) => {
                 if (mutation.type === mTypes.EVENT_LIST_CHANGE) {
                     self.refreshing = false
-                    if (this.currentSelection !== false) {
-                        let hasItem = false
-                        this.$store.state.events.events.forEach((item) => {
-                            if (item.eventId === this.currentSelection.eventId) {
-                                hasItem = true
-                            }
-                        })
-                        if (!hasItem) {
-                            this.deselectEvent()
-                        }
-                    }
                 }
             })
             this.now = new Date().getTime()
