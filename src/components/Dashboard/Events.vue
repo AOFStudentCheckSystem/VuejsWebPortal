@@ -5,13 +5,6 @@
                                                                                                 :class="{'fa-spin':refreshing}"></i>
             </button>
         </h1>
-        <div class="row">
-            <div class="progress" style="height: 5px;">
-                <div class="progress-bar progress-bar-default" :aria-valuenow="timeoutPercent" aria-valuemin="0"
-                     aria-valuemax="100" :style="{width : timeoutPercent + '%'}">
-                </div>
-            </div>
-        </div>
         <div class='row'>
             <ul class='nav nav-tabs'>
                 <li :class='{active : isTab(0)}'><a v-on:click='setTab(0)'>All Events <span
@@ -26,7 +19,15 @@
                     class='label label-badge label-warning'>{{offlineEvents.length}}</span></a></li>
             </ul>
         </div>
-        <div class='row' style='margin-top: 0.5em; max-height: 60vh; overflow-y: scroll;'>
+        <div class="row">
+            <div class="progress" style="height: 5px; opacity: 0.3">
+                <div class="progress-bar progress-bar-default progress-bar-fast" :aria-valuenow="timeoutPercent"
+                     aria-valuemin="0"
+                     aria-valuemax="100" :style="{width : timeoutPercent + '%'}">
+                </div>
+            </div>
+        </div>
+        <div class='row' style="max-height: 60vh; overflow-y: scroll;">
             <div class='list-group'>
                 <a class='list-group-item' v-for='event in currentEvents' :class="{active : isSelected(event)}"
                    v-on:click="selectEvent(event)">
@@ -38,7 +39,7 @@
         </div>
         <div class="row" style="margin-top: 0.5em;">
             <div class="pull-right">
-                <button class="btn btn-primary" :disabled="!isComplete" v-on:click="sendEmail()">Email</button>
+                <button class="btn btn-primary" :disabled="isOffline" v-on:click="sendEmail()">Email</button>
                 <button class="btn btn-default" :disabled="!hasSelection" v-on:click="viewDetail()">View Detail</button>
             </div>
             <button class="btn btn-danger" :disabled="!canDelete" v-if="(current_tab < 4)" v-on:click="deleteEvent()">
@@ -60,7 +61,7 @@
         name: 'EventList',
         data () {
             return {
-                current_tab: 0,
+                current_tab: 3,
                 refreshing: false,
                 lastUpdate: 0,
                 now: 0
@@ -129,10 +130,10 @@
 
             nowTimeout = window.setInterval(() => {
                 this.now = new Date().getTime()
-            }, 10)
+            }, 50)
             timeout = window.setInterval(() => {
                 this.reloadList()
-                this.lastUpdate = this.now
+                this.lastUpdate = this.now + 700
             }, updateInterval)
         },
         beforeDestroy () {
@@ -193,8 +194,8 @@
             currentSelection () {
                 return this.$store.state.events.active
             },
-            isComplete () {
-                return this.hasSelection && this.currentSelection.eventStatus === 2
+            isOffline () {
+                return this.hasSelection && this.currentSelection.eventStatus < 0
             }
         }
     }
@@ -202,5 +203,13 @@
 <style scoped>
     a {
         cursor: pointer;
+    }
+
+    .progress-bar-fast {
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear;
     }
 </style>

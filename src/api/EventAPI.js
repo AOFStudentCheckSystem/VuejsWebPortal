@@ -32,4 +32,16 @@ export class EventAPI {
             })
         })
     }
+
+    sendEmail (event, recipients) {
+        const formData = new FormData()
+        formData.append('recipients', JSON.stringify({recipients: recipients}))
+        return new Promise((resolve, reject) => {
+            Vue.http.post('event/' + event.eventId + '/send', formData).then((response) => {
+                resolve(response)
+            }, (response) => {
+                reject(response)
+            })
+        })
+    }
 }

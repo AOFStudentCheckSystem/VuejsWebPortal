@@ -1,0 +1,96 @@
+<template>
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+</template>
+<style scoped>
+    /* Absolute Center Spinner */
+    .loading {
+        position: fixed;
+        z-index: 999;
+        height: 2em;
+        width: 2em;
+        overflow: visible;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    /* Transparent Overlay */
+    .loading:before {
+        content: '';
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* :not(:required) hides these rules from IE9 and below */
+    .loading:not(:required) {
+        /* hide "loading..." text */
+        color: transparent;
+        text-shadow: none;
+        background-color: transparent;
+        border: 0;
+    }
+
+    .spinner {
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        height: 60px;
+        width: 60px;
+        margin: 0px auto;
+        -webkit-animation: rotation .6s infinite linear;
+        -moz-animation: rotation .6s infinite linear;
+        -o-animation: rotation .6s infinite linear;
+        animation: rotation .6s infinite linear;
+        border-left: 6px solid rgba(0, 174, 239, .15);
+        border-right: 6px solid rgba(0, 174, 239, .15);
+        border-bottom: 6px solid rgba(0, 174, 239, .15);
+        border-top: 6px solid rgba(0, 174, 239, .8);
+        border-radius: 100%;
+    }
+
+    @-webkit-keyframes rotation {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    @-moz-keyframes rotation {
+        from {
+            -moz-transform: rotate(0deg);
+        }
+        to {
+            -moz-transform: rotate(359deg);
+        }
+    }
+
+    @-o-keyframes rotation {
+        from {
+            -o-transform: rotate(0deg);
+        }
+        to {
+            -o-transform: rotate(359deg);
+        }
+    }
+
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
+</style>
